@@ -9,6 +9,7 @@ goal is completed or a wave of visitors arrives.
 - `privatus-analytics/` is the piece, exactly as it sits in
   `packages/pieces/community/privatus-analytics` of the Activepieces repository.
   Its own [README](privatus-analytics/README.md) lists the triggers and actions.
+- `privatus-analytics/test/` holds the unit tests (run with Vitest, no network needed).
 - `tests/live-test.js` runs every action, the dropdowns, the token check and both triggers against
   the live API.
 
@@ -39,6 +40,7 @@ git checkout npm-privatus-analytics-piece
 bun install --ignore-scripts
 npx turbo run build --filter=@privatus-analytics/piece-privatus-analytics
 npx turbo run lint --filter=@privatus-analytics/piece-privatus-analytics
+npx turbo run test --filter=@privatus-analytics/piece-privatus-analytics
 PRIVATUS_API_TOKEN=pat_... node /path/to/this/repo/tests/live-test.js \
   packages/pieces/community/privatus-analytics/dist/src/index.js
 ```

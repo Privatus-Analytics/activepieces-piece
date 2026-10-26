@@ -106,6 +106,35 @@ async function main() {
     const event = events.find((e) => e.goal_id === goalId);
     check('new_goal_conversion emits when a count grows', event && event.new_completions >= 1, short(event));
   }
+  // Pretend the last check was yesterday, before that day's last completions:
+  // the next run must fetch yesterday's final counts and send the difference.
+  const today = [...store.data.values()][0].date;
+  const yesterdayDate = new Date(`${today}T00:00:00Z`);
+  yesterdayDate.setUTCDate(yesterdayDate.getUTCDate() - 1);
+  const yesterday = yesterdayDate.toISOString().slice(0, 10);
+  {
+    const dayFinals = await actions.list_goals.run({
+      auth,
+      propsValue: { site_id: site, period: 'custom', date_from: `${yesterday}T00:00:00.000Z`, date_to: `${yesterday}T00:00:00.000Z` },
+    });
+    const dayGoal = dayFinals.find((g) => g.completions > 0);
+    const key = [...store.data.keys()][0];
+    const completions = Object.fromEntries(dayFinals.map((g) => [g.goal_id, g.completions]));
+    const conversions = Object.fromEntries(dayFinals.map((g) => [g.goal_id, g.conversions]));
+    if (dayGoal) {
+      completions[dayGoal.goal_id] -= 1;
+      store.data.set(key, { date: yesterday, completions, conversions });
+      const events = await goalTrigger.run(ctx);
+      const late = events.filter((e) => e.date === yesterday);
+      check('new_goal_conversion sends the last completions of the previous day', late.length === 1 && late[0].goal_id === dayGoal.goal_id && late[0].new_completions === 1, short(late));
+      check('new_goal_conversion moves the stored day to today', [...store.data.values()][0].date === today, [...store.data.values()][0].date);
+    } else {
+      // No completions yesterday: nothing may be sent for that day.
+      store.data.set(key, { date: yesterday, completions, conversions });
+      const events = await goalTrigger.run(ctx);
+      check('new_goal_conversion sends nothing for a quiet previous day', events.every((e) => e.date === today), short(events));
+    }
+  }
   const goalSamples = await goalTrigger.test(ctx);
   check('new_goal_conversion test returns samples', Array.isArray(goalSamples), `${goalSamples.length} sample(s)`);
   await goalTrigger.onDisable(ctx);
