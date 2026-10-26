@@ -1,6 +1,22 @@
 {
-  "name": "@activepieces/piece-privatus-analytics",
+  "name": "@privatus-analytics/piece-privatus-analytics",
   "version": "0.0.1",
+  "description": "Activepieces piece for Privatus Analytics, cookieless website analytics: visitor stats, top pages, live visitors and goal conversion triggers in your flows.",
+  "keywords": [
+    "activepieces",
+    "activepieces-piece",
+    "privatus-analytics",
+    "analytics",
+    "cookieless",
+    "privacy"
+  ],
+  "homepage": "https://privatusanalytics.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Privatus-Analytics/activepieces-piece.git"
+  },
+  "license": "MIT",
+  "author": "Two Phase LLC",
   "type": "commonjs",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",

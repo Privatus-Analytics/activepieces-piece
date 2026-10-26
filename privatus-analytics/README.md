@@ -12,6 +12,24 @@ numbers into your flows.
 **So your numbers come to you.** Send a weekly visitor report to Slack, add yesterday's top pages to
 a Google Sheet, or get a message the moment a goal is completed or a big wave of visitors arrives.
 
+## Install the piece
+
+This piece is on npm as
+[`@privatus-analytics/piece-privatus-analytics`](https://www.npmjs.com/package/@privatus-analytics/piece-privatus-analytics).
+It is not in the built-in list of pieces, so you add it to your own Activepieces by its npm name.
+
+1. Log in to your Activepieces as a platform admin.
+2. Open **Platform Admin**, then **Catalogue**, then **Pieces**. (In older versions this is
+   **Settings**, then **My Pieces**.)
+3. Click **Install Piece**.
+4. Set **Package Type** to **NPM Registry**.
+5. For **Piece Name**, type `@privatus-analytics/piece-privatus-analytics`.
+6. For **Piece Version**, type the latest version shown on the npm page, for example `0.0.1`.
+7. Click **Install**. The piece now shows up in the flow builder as **Privatus Analytics**.
+
+Your Activepieces server needs to reach `registry.npmjs.org` to download it, and must be version
+0.36.1 or newer. To update later, install the new version the same way.
+
 ## Triggers
 
 - **New Goal Conversion:** starts when a goal is completed again, like a sign-up or a purchase.
