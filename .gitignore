@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.turbo/
+.DS_Store
+.secrets/
+.env
+SUBMISSION*.md
+PR_BODY.md
